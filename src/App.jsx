@@ -9,6 +9,7 @@ function App() {
   const [posts, setPosts] = useState([
     { title: '첫 번째 게시글', content: '내용1', author: '작성자1' },
     { title: '두 번째 게시글', content: '내용2', author: '작성자2' },
+    { title: '세 번째 게시글', content: '내용2', author: '작성자2' },
   ]);
 
   return (
