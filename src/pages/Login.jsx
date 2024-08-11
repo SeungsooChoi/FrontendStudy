@@ -1,19 +1,46 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import api from '../services/api';
+import { handleApiError } from '../utils/errorHandler';
 
-function Login({ setLoggedIn }) {
+const Login = ({ setLoggedIn }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const validate = () => {
+    if (!email.trim()) {
+      setError('이메일을 입력해주세요.');
+      return false;
+    }
+    if (!password.trim()) {
+      setError('비밀번호를 입력해주세요.');
+      return false;
+    }
+    return true;
+  };
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // 간단한 로그인 로직 (실제 로그인 로직에서는 백엔드와 연동 필요)
-    if (email === 'test@test.com' && password === '1234') {
+    setError('');
+
+    if (!validate()) return;
+
+    setIsLoading(true);
+
+    try {
+      const response = await api.login(email, password);
+      if (response.status !== 200) throw response;
+      sessionStorage.setItem('token', response.data.accessToken);
       setLoggedIn(true);
-      navigate('/board');
-    } else {
-      alert('로그인 실패');
+      navigate('/');
+    } catch (error) {
+      const errorMessage = handleApiError(error);
+      setError(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -21,15 +48,24 @@ function Login({ setLoggedIn }) {
     <form onSubmit={handleLogin}>
       <div>
         <label>Email: </label>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={isLoading} required />
       </div>
       <div>
         <label>Password: </label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          disabled={isLoading}
+          required
+        />
       </div>
       <button type="submit">Login</button>
+      <div>
+        계정이 없으신가요? <Link to="/join">회원가입</Link>
+      </div>
     </form>
   );
-}
+};
 
 export default Login;

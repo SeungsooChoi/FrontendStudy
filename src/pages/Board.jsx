@@ -1,6 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import api from '../services/api';
 
-function Board({ posts }) {
+const Board = () => {
+  const [posts, setPosts] = useState([
+    { title: '첫 번째 게시글', content: '내용1', author: '작성자1' },
+    { title: '두 번째 게시글', content: '내용2', author: '작성자2' },
+    { title: '세 번째 게시글', content: '내용2', author: '작성자2' },
+  ]);
+
+  const getBoardList = async () => {
+    try {
+      const params = {
+        page: 1,
+        size: 10,
+      };
+      const response = await api.getBoardList();
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    getBoardList();
+  }, []);
+
   return (
     <div>
       <h1>게시판</h1>
@@ -15,6 +36,6 @@ function Board({ posts }) {
       ))}
     </div>
   );
-}
+};
 
 export default Board;
