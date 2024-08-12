@@ -23,10 +23,10 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response && error.response.status === 401) {
-      sessionStorage.removeItem('token');
-      window.location = '/login';
-    }
+    // if (error.response && error.response.status === 401) {
+    //   sessionStorage.removeItem('token');
+    //   window.location = '/login';
+    // }
     return Promise.reject(error);
   }
 );

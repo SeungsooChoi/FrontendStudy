@@ -1,6 +1,3 @@
 import api from './base';
 
-export const getBoardList = async (params) => {
-  const response = await api.post('/board', params);
-  return response.data;
-};
+export const getBoardList = async (params) => await api.get('/board', { params }).then((response) => response.data);
