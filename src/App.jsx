@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Board from './pages/Board';
 import './styles/app.css';
 import Join from './pages/Join';
+import BoardDetail from './pages/BoardDetail';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -29,6 +30,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={loggedIn ? <Board /> : <Navigate to="/login" />} />
+        <Route path="/post/:id" element={<BoardDetail />} />
         <Route path="/login" element={<Login setLoggedIn={setLoggedIn} />} />
         <Route path="/join" element={<Join />} />
       </Routes>

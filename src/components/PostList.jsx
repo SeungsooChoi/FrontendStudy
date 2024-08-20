@@ -1,5 +1,6 @@
 import moment from 'moment';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Table = styled.table`
@@ -35,6 +36,11 @@ const TableHeaderCell = styled.th`
 
 const PostList = ({ posts }) => {
   moment.locale('ko');
+  const navigate = useNavigate();
+
+  const handleRowClick = (id) => {
+    navigate(`/post/${id}`);
+  };
 
   return (
     <Table>
@@ -48,7 +54,7 @@ const PostList = ({ posts }) => {
       </TableHeader>
       <tbody>
         {posts.map((post, index) => (
-          <TableRow key={post.boardId}>
+          <TableRow key={post.boardId} onClick={() => handleRowClick(post.boardId)}>
             <TableCell>{index + 1}</TableCell>
             <TableCell>{post.boardTitle}</TableCell>
             <TableCell>{post.boardNickname}</TableCell>
